@@ -1,5 +1,10 @@
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.model_selection import train_test_split
+import pickle
+import joblib
+import pandas as pd
+from sklearn.feature_extraction.text import CountVectorizer
+import pandas as pd
 
 df = pd.read_csv("spam.csv", encoding="latin-1")
 df.drop(['Unnamed: 2', 'Unnamed: 3', 'Unnamed: 4'], axis=1, inplace=True)
