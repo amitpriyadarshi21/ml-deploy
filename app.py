@@ -85,6 +85,7 @@ def email():
 
 @app.route('/pipe' , methods=['POST'])
 def pipe():  
+    format = request.args.get('format')
     int_features = [float(x) for x in request.form.values()]
     print(int_features)
     final_features = [np.array(int_features)]
