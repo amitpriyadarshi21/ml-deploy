@@ -15,7 +15,7 @@ clf = pickle.load(open('nlp_model.pkl', 'rb'))
 cv = pickle.load(open('tranform.pkl', 'rb'))
 svm = pickle.load(open('svm.pkl', 'rb'))
 iris = pickle.load(open('iris.pkl', 'rb'))
-pipe= pickle.load(open('pipeline.pkl', 'rb'))
+pipeline= pickle.load(open('pipeline.pkl', 'rb'))
 
 
 @app.route('/')
@@ -85,13 +85,16 @@ def predict_email():
 #     return jsonify({'y': output})
 
 @app.route('/pipe' , methods=['POST'])
-def pipeline_target():  
+def pipe():  
     int_features = [float(x) for x in request.form.values()]
     print(int_features)
     final_features = [np.array(int_features)]
-    prediction = pipe.predict(final_features)
+    prediction = pipeline.predict(final_features)
     output = str(prediction[0])
-    return jsonify({'output': output})
+    if(format == 'json'):
+        return jsonify({'output': output})
+
+    return render_template('index.html', prediction_text='output {}'.format(output))
 
 if __name__ == "__main__":
     app.run(debug=True)  # auto-reload on code change
