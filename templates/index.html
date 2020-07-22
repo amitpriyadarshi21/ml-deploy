@@ -16,10 +16,11 @@
     <h1>Predict Salary Analysis</h1>
 
     <!-- Main Input For Receiving Query to our ML -->
-    <form action="{{ url_for('predict')}}" method="post">
-      <input type="text" name="experience" placeholder="Experience" required="required" />
-      <input type="text" name="test_score" placeholder="Test Score" required="required" />
-      <input type="text" name="interview_score" placeholder="Interview Score" required="required" />
+    <form action="{{ url_for('pipe')}}" method="post">
+      <input type="text" name="horsepower" placeholder="horsepower", required="required" />
+      <input type="text" name="curb-weight" placeholder="curb-weight" required="required" />
+      <input type="text" name="engine-size" placeholder="engine-size" required="required" />
+      <input type="text" name="highway-mpg" placeholder="highway-mpg" required="required" />
 
       <button type="submit" class="btn btn-primary btn-block btn-large">Predict</button>
     </form>

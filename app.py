@@ -1,6 +1,7 @@
 import numpy as np
 from flask import Flask, request, jsonify, render_template
 import pickle
+import xgboost as xgb
 
 app = Flask(__name__)
 
@@ -13,6 +14,8 @@ model = pickle.load(open('model.pkl', 'rb'))
 clf = pickle.load(open('nlp_model.pkl', 'rb'))
 cv = pickle.load(open('tranform.pkl', 'rb'))
 svm = pickle.load(open('svm.pkl', 'rb'))
+iris = pickle.load(open('iris.pkl', 'rb'))
+pipe= pickle.load(open('pipeline.pkl', 'rb'))
 
 
 @app.route('/')
@@ -48,14 +51,16 @@ def predict():
 
 @app.route('/svm_model' , methods=['POST'])
 def svm_model():
-    int_features = [int(x) for x in request.form.values()]
+    format = request.args.get('format')
+    print(format)
+    int_features = [float(x) for x in request.form.values()]
     final_features = [np.array(int_features)]
     prediction = svm.predict(final_features)
-    output = prediction[0]
+    output = str(prediction[0])
     if(format == 'json'):
         return jsonify({'y': output})
 
-    return render_template('svm.html', prediction_text='y= {}'.format(output))    
+    return render_template('svm.html', prediction_text='output= {}'.format(output)) 
 
 
 @app.route('/predict_email', methods=['POST'])
@@ -68,6 +73,25 @@ def predict_email():
         my_prediction = clf.predict(vect)
     return my_prediction
 
+# @app.route('/iris' , methods=['POST'])
+# def iris_target():
+   
+#     int_features = [float(x) for x in request.form.values()]
+#     final_features = [np.array(int_features)]
+#     final_features = xgb.DMatrix(final_features)
+#     prediction = iris.predict(final_features)
+
+#     output = str(prediction[0])
+#     return jsonify({'y': output})
+
+@app.route('/pipe' , methods=['POST'])
+def pipeline_target():  
+    int_features = [float(x) for x in request.form.values()]
+    print(int_features)
+    final_features = [np.array(int_features)]
+    prediction = pipe.predict(final_features)
+    output = str(prediction[0])
+    return jsonify({'output': output})
 
 if __name__ == "__main__":
     app.run(debug=True)  # auto-reload on code change
