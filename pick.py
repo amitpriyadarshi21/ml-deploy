@@ -1,10 +1,10 @@
-import pickle
+# import pickle
 
-filename = 'dogs'
+# filename = 'dogs'
 
-infile = open(filename, 'rb')
-new_dict = pickle.load(infile)
-infile.close()
+# infile = open(filename, 'rb')
+# new_dict = pickle.load(infile)
+# infile.close()
 
-print(new_dict)
-print(type(new_dict))
+# print(new_dict)
+# print(type(new_dict))
