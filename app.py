@@ -15,6 +15,9 @@ app = Flask(__name__)
 # svm = pickle.load(open('svm.pkl', 'rb'))
 # iris = pickle.load(open('iris.pkl', 'rb'))
 pipeline= pickle.load(open('pipeline.pkl', 'rb'))
+xgb=pickle.load(open('project.pkl', 'rb'))
+prediction_data=pickle.load(open('test_data.pkl', 'rb'))
+
 
 
 @app.route('/')
@@ -95,6 +98,19 @@ def pipe():
         return jsonify({'output': output})
 
     return render_template('index.html', prediction_text='output {}'.format(output))
+
+@app.route('/project' , methods=['GET'])
+def project():
+    format = request.args.get('format')
+    # int_features = [float(x) for x in request.form.values()]
+    # print(int_features)
+    # final_features = [np.array(int_features)]
+    prediction = xgb.predict(prediction_data)
+    output = str(prediction)
+    if(format == 'json'):
+        return jsonify({'salesPrice': output})
+
+    return render_template('index.html', prediction_text='output {}'.format(output))    
 
 if __name__ == "__main__":
     app.run(debug=True)  # auto-reload on code change
